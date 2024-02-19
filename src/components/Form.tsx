@@ -12,34 +12,17 @@ const Form = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    // formState: { errors },
   } = useForm<FormProps>();
   const onSubmit = (data: FieldValues) => {
-    console.log(data);
-    // const { src_api_key, tgt_api_key, src_doc_id, publish_status } = data;
-    // const data = { src_api_key, tgt_api_key, src_doc_id, publish_status };
-    // console.log(data);
-    // const url = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
-    // const headers = { "Content-Type": "application/json" };
-    // const body = JSON.stringify(data);
-    // fetch(url, { method: "POST", headers, body })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log(data);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error:", error);
-    //   });
-    // const url = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
-    // const headers = { "Content-Type": "application/json" };
-    // axios
-    //   .post("http://127.0.0.1:8000/pull-push", data)
-    //   .then((res) => {
-    //     console.log(res.data);
-    //   })
-    //   .catch((err) => {
-    //     console.error("Error:", err);
-    //   });
+    axios
+      .post("http://127.0.0.1:8000/pull-push", data)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.error("Error:", err);
+      });
   };
 
   return (
