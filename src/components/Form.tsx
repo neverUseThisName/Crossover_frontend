@@ -16,7 +16,7 @@ const Form = () => {
   } = useForm<FormProps>();
   const onSubmit = (data: FieldValues) => {
     axios
-      .post("http://127.0.0.1:8000/pull-push", data)
+      .post("http://3.138.175.31/api/pull-push", data)
       .then((res) => {
         console.log(res.data);
       })
