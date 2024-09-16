@@ -1,5 +1,8 @@
 import { FieldValues, useForm } from "react-hook-form";
 import axios from "axios";
+import React, { useState } from "react";
+
+import { BACKEND_URL } from "../constants";
 
 interface FormProps {
   src_api_key: string;
@@ -9,20 +12,37 @@ interface FormProps {
 }
 
 const Form = () => {
+  const [preview, setPreview] = useState<string | undefined>();
   const {
     register,
     handleSubmit,
     // formState: { errors },
   } = useForm<FormProps>();
-  const onSubmit = (data: FieldValues) => {
-    axios
-      .post("http://3.138.175.31/api/pull-push", data)
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.error("Error:", err);
-      });
+  const onSubmit = (data: FieldValues, e) => {
+    // test if e is null
+    e.preventDefault();
+    if (e.nativeEvent.submitter.name == "convert") {
+      axios
+        .post(BACKEND_URL + "/api/pull-push", data)
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.error("Error:", err);
+        });
+    } else if (e.nativeEvent.submitter.name == "preview") {
+      delete data.publish_status;
+      delete data.tgt_api_key;
+      axios
+        .post(BACKEND_URL + "/api/preview", data)
+        .then((res) => {
+          console.log(res.data);
+          setPreview(res.data);
+        })
+        .catch((err) => {
+          console.error("Error:", err);
+        });
+    }
   };
 
   return (
@@ -141,10 +161,15 @@ const Form = () => {
               </div>
             </div>
           </div>
-          <button type="submit" className="btn btn-danger">
+          <button type="submit" name="preview" className="btn btn-primary mx-4">
+            Preview
+          </button>
+          <button type="submit" name="convert" className="btn btn-danger">
             Convert
           </button>
         </form>
+        <br />
+        <div>{preview}</div>
       </div>
     </>
   );
